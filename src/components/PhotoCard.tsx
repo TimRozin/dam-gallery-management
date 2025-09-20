@@ -32,7 +32,7 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300 ease-in-out">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-gray-900/50 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900/70 hover:scale-105 transition-all duration-300 ease-in-out">
         <div
           className="relative aspect-[4/3] overflow-hidden cursor-pointer"
           onClick={() => setIsLightboxOpen(true)}
@@ -63,26 +63,28 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
             </div>
           </div>
         </div>
-        <div className="p-4">
+        <div className="p-3">
           {photo.title && (
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+            <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-2">
               {photo.title}
             </h3>
           )}
 
           {/* Tags Display */}
-          <div className="mb-3">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Tags</span>
+          <div className="mb-2">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                Tags
+              </span>
               <button
                 onClick={() => setIsEditingTags(!isEditingTags)}
-                className="text-xs text-blue-600 hover:text-blue-800 transition-colors"
+                className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
               >
                 {isEditingTags ? "Done" : "Edit"}
               </button>
             </div>
 
-            <div className="flex flex-wrap gap-2 mb-3">
+            <div className="flex flex-wrap gap-1.5 mb-2">
               {photo.tags.map((tag, index) => {
                 // Test with hardcoded colors first
                 const testColors = [
@@ -103,7 +105,7 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
                 return (
                   <span
                     key={index}
-                    className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm ${testColor}`}
+                    className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold shadow-sm ${testColor}`}
                   >
                     {tag}
                     {isEditingTags && (
@@ -133,14 +135,14 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
 
             {/* Add Tag Form */}
             {isEditingTags && (
-              <div className="space-y-2">
-                <form onSubmit={handleAddTag} className="flex gap-2">
+              <div className="space-y-1.5">
+                <form onSubmit={handleAddTag} className="flex gap-1.5">
                   <input
                     type="text"
                     value={newTag}
                     onChange={(e) => setNewTag(e.target.value)}
                     placeholder="Add tag"
-                    className="flex-1 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    className="flex-1 px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700 text-black dark:text-white"
                   />
                   <button
                     type="submit"
@@ -153,7 +155,9 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
                 {/* Quick Add Tags */}
                 {availableTags.length > 0 && (
                   <div>
-                    <p className="text-xs text-gray-500 mb-1">Quick add:</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                      Quick add:
+                    </p>
                     <div className="flex flex-wrap gap-1">
                       {availableTags.slice(0, 5).map((tag) => {
                         const tagColor = getTagColor(tag);
@@ -164,7 +168,7 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
                           <button
                             key={tag}
                             onClick={() => addTagToPhoto(photo.id, tag)}
-                            className={`px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm ${tagColor} hover:opacity-80 transition-opacity`}
+                            className={`px-2 py-1 rounded-full text-xs font-semibold shadow-sm ${tagColor} hover:opacity-80 transition-opacity`}
                           >
                             + {tag}
                           </button>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { TagProvider } from "@/lib/context";
+import { ThemeProvider } from "@/lib/theme-context";
 
 export const metadata: Metadata = {
   title: "Digital Asset Management - Photo Gallery",
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <TagProvider>{children}</TagProvider>
+        <ThemeProvider>
+          <TagProvider>{children}</TagProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

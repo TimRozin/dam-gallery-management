@@ -55,7 +55,7 @@ export default function Lightbox({ photo, isOpen, onClose }: LightboxProps) {
       />
 
       {/* Lightbox Content */}
-      <div className="relative z-10 flex max-w-7xl max-h-[90vh] bg-white rounded-lg overflow-hidden shadow-2xl">
+      <div className="relative z-10 flex max-w-7xl max-h-[90vh] bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-2xl">
         {/* Image Section */}
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="relative max-w-full max-h-full">
@@ -71,16 +71,16 @@ export default function Lightbox({ photo, isOpen, onClose }: LightboxProps) {
         </div>
 
         {/* Sidebar */}
-        <div className="w-80 bg-gray-50 border-l border-gray-200 p-6 overflow-y-auto">
+        <div className="w-80 bg-gray-50 dark:bg-gray-700 border-l border-gray-200 dark:border-gray-600 p-6 overflow-y-auto">
           <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                 Photo Details
               </h2>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
                 <svg
                   className="w-6 h-6"
@@ -100,30 +100,30 @@ export default function Lightbox({ photo, isOpen, onClose }: LightboxProps) {
 
             {/* Image Name */}
             <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Image Name
               </h3>
-              <p className="text-lg font-semibold text-gray-900">
+              <p className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 {photo.title || "Untitled"}
               </p>
             </div>
 
             {/* Dimensions */}
             <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Dimensions
               </h3>
               {imageDimensions ? (
                 <div className="space-y-1">
-                  <p className="text-sm text-gray-900">
+                  <p className="text-sm text-gray-900 dark:text-gray-100">
                     <span className="font-medium">Width:</span>{" "}
                     {imageDimensions.width}px
                   </p>
-                  <p className="text-sm text-gray-900">
+                  <p className="text-sm text-gray-900 dark:text-gray-100">
                     <span className="font-medium">Height:</span>{" "}
                     {imageDimensions.height}px
                   </p>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
                     <span className="font-medium">Aspect Ratio:</span>{" "}
                     {(imageDimensions.width / imageDimensions.height).toFixed(
                       2
@@ -132,13 +132,17 @@ export default function Lightbox({ photo, isOpen, onClose }: LightboxProps) {
                   </p>
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">Loading dimensions...</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Loading dimensions...
+                </p>
               )}
             </div>
 
             {/* Tags */}
             <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-3">Tags</h3>
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                Tags
+              </h3>
               <div className="flex flex-wrap gap-2">
                 {photo.tags.map((tag, index) => {
                   // Test with hardcoded colors first
@@ -168,17 +172,19 @@ export default function Lightbox({ photo, isOpen, onClose }: LightboxProps) {
                   );
                 })}
                 {photo.tags.length === 0 && (
-                  <p className="text-sm text-gray-500">No tags assigned</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    No tags assigned
+                  </p>
                 )}
               </div>
             </div>
 
             {/* Image Info */}
             <div>
-              <h3 className="text-sm font-medium text-gray-700 mb-2">
+              <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Image Information
               </h3>
-              <div className="space-y-1 text-sm text-gray-600">
+              <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
                 <p>
                   <span className="font-medium">Format:</span> JPEG
                 </p>

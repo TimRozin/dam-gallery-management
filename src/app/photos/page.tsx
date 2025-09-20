@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTags } from "@/lib/context";
 import PhotoCard from "@/components/PhotoCard";
 import TagSidebar from "@/components/TagSidebar";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function PhotosPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,24 +24,30 @@ export default function PhotosPage() {
   }, [searchQuery, photos]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 py-3">
           <div className="flex items-center justify-between">
             <Link
               href="/"
-              className="text-xl font-bold text-gray-900 hover:text-blue-600 transition-colors"
+              className="text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               DAM System
             </Link>
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => setIsSidebarOpen(true)}
-                className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-              >
-                Manage Tags
-              </button>
+              <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-200">
+                Photo Gallery
+              </h1>
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <button
+                  onClick={() => setIsSidebarOpen(true)}
+                  className="px-3 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors text-sm font-medium"
+                >
+                  Manage Tags
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -51,7 +58,7 @@ export default function PhotosPage() {
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg
-              className="h-5 w-5 text-gray-400"
+              className="h-5 w-5 text-gray-400 dark:text-gray-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -69,14 +76,14 @@ export default function PhotosPage() {
             placeholder="Search photos by tags (e.g., nature, city, ocean)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-lg text-black"
+            className="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:placeholder-gray-400 dark:focus:placeholder-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-lg text-black dark:text-white"
           />
         </div>
       </div>
 
       {/* Results Count */}
       <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 pb-3">
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           {filteredPhotos.length} photo{filteredPhotos.length !== 1 ? "s" : ""}{" "}
           found
           {searchQuery && ` for "${searchQuery}"`}
@@ -87,7 +94,7 @@ export default function PhotosPage() {
       <div className="max-w-6xl mx-auto px-3 sm:px-4 lg:px-6 pb-6">
         {filteredPhotos.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
+            <div className="text-gray-400 dark:text-gray-500 mb-4">
               <svg
                 className="mx-auto h-12 w-12"
                 fill="none"
@@ -102,10 +109,10 @@ export default function PhotosPage() {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
               No photos found
             </h3>
-            <p className="text-gray-500">
+            <p className="text-gray-500 dark:text-gray-400">
               Try adjusting your search terms or browse all photos.
             </p>
           </div>
