@@ -12,25 +12,61 @@ export const tagColors: Record<string, string> = {};
 export function getTagColor(tag: string): string {
   if (!tagColors[tag]) {
     const colors = [
-      "bg-blue-100 text-blue-800",
-      "bg-green-100 text-green-800",
-      "bg-purple-100 text-purple-800",
-      "bg-pink-100 text-pink-800",
-      "bg-yellow-100 text-yellow-800",
-      "bg-indigo-100 text-indigo-800",
-      "bg-red-100 text-red-800",
-      "bg-orange-100 text-orange-800",
-      "bg-teal-100 text-teal-800",
-      "bg-cyan-100 text-cyan-800",
-      "bg-lime-100 text-lime-800",
-      "bg-amber-100 text-amber-800",
-      "bg-emerald-100 text-emerald-800",
-      "bg-violet-100 text-violet-800",
-      "bg-rose-100 text-rose-800",
-      "bg-sky-100 text-sky-800",
+      "bg-blue-500 text-white",
+      "bg-green-500 text-white",
+      "bg-purple-500 text-white",
+      "bg-pink-500 text-white",
+      "bg-yellow-500 text-white",
+      "bg-indigo-500 text-white",
+      "bg-red-500 text-white",
+      "bg-orange-500 text-white",
+      "bg-teal-500 text-white",
+      "bg-cyan-500 text-white",
+      "bg-lime-500 text-white",
+      "bg-amber-500 text-white",
+      "bg-emerald-500 text-white",
+      "bg-violet-500 text-white",
+      "bg-rose-500 text-white",
+      "bg-sky-500 text-white",
+      "bg-slate-500 text-white",
+      "bg-gray-500 text-white",
+      "bg-zinc-500 text-white",
+      "bg-neutral-500 text-white",
+      "bg-stone-500 text-white",
+      "bg-fuchsia-500 text-white",
+      "bg-blue-600 text-white",
+      "bg-green-600 text-white",
+      "bg-purple-600 text-white",
+      "bg-pink-600 text-white",
+      "bg-yellow-600 text-white",
+      "bg-indigo-600 text-white",
+      "bg-red-600 text-white",
+      "bg-orange-600 text-white",
+      "bg-teal-600 text-white",
+      "bg-cyan-600 text-white",
+      "bg-lime-600 text-white",
+      "bg-amber-600 text-white",
+      "bg-emerald-600 text-white",
+      "bg-violet-600 text-white",
+      "bg-rose-600 text-white",
+      "bg-sky-600 text-white",
+      "bg-slate-600 text-white",
+      "bg-gray-600 text-white",
+      "bg-zinc-600 text-white",
     ];
-    const colorIndex = Object.keys(tagColors).length % colors.length;
+
+    // Use a hash of the tag name to get a consistent but seemingly random color
+    let hash = 0;
+    for (let i = 0; i < tag.length; i++) {
+      const char = tag.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash = hash & hash; // Convert to 32-bit integer
+    }
+    const colorIndex = Math.abs(hash) % colors.length;
     tagColors[tag] = colors[colorIndex];
+
+    // Debug log to see what's happening
+    console.log(`Tag "${tag}" got color: ${colors[colorIndex]}`);
   }
   return tagColors[tag];
 }

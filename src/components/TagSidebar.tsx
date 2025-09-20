@@ -102,7 +102,7 @@ export default function TagSidebar({ isOpen, onClose }: TagSidebarProps) {
                   className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                 >
                   <span
-                    className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${getTagColor(
+                    className={`inline-block px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm ${getTagColor(
                       tag
                     )}`}
                   >

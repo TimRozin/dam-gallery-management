@@ -20,6 +20,11 @@ export function TagProvider({ children }: { children: React.ReactNode }) {
 
   const allTags = getAllTags();
 
+  // Initialize tag colors for all existing tags
+  allTags.forEach((tag) => {
+    getTagColor(tag);
+  });
+
   const addTagToPhoto = useCallback((photoId: number, tag: string) => {
     setPhotoData((prev) =>
       prev.map((photo) =>
@@ -39,8 +44,7 @@ export function TagProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const addNewTag = useCallback((tag: string) => {
-    // This would typically add to a global tag list
-    // For now, we'll just ensure the color is generated
+    // Ensure the color is generated for the new tag
     getTagColor(tag);
   }, []);
 
