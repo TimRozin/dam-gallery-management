@@ -35,9 +35,6 @@ export default function PhotosPage() {
               DAM System
             </Link>
             <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-semibold text-gray-800">
-                Photo Gallery
-              </h1>
               <button
                 onClick={() => setIsSidebarOpen(true)}
                 className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"

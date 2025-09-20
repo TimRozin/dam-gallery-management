@@ -9,22 +9,39 @@ interface TagSidebarProps {
 }
 
 export default function TagSidebar({ isOpen, onClose }: TagSidebarProps) {
-  const { allTags, removeTag, getTagColor } = useTags();
-  const [newTag, setNewTag] = useState("");
-
-  const handleAddTag = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newTag.trim() && !allTags.includes(newTag.trim())) {
-      // In a real app, you'd add this to a global tag list
-      setNewTag("");
-    }
-  };
+  const { allTags, removeTag, getTagColor, photos } = useTags();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleRemoveTag = (tag: string) => {
     if (confirm(`Remove tag "${tag}" from all photos?`)) {
       removeTag(tag);
     }
   };
+
+  // Filter tags based on search query
+  const filteredTags = allTags.filter((tag) =>
+    tag.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Calculate tag usage count and create mosaic data
+  const tagMosaicData = filteredTags
+    .map((tag) => {
+      const usageCount = photos.reduce(
+        (count, photo) => count + (photo.tags.includes(tag) ? 1 : 0),
+        0
+      );
+
+      // Calculate size based on usage (min 1, max 4)
+      const size = Math.max(1, Math.min(4, Math.ceil(usageCount / 2)));
+
+      return {
+        tag,
+        usageCount,
+        size,
+        color: getTagColor(tag),
+      };
+    })
+    .sort((a, b) => b.usageCount - a.usageCount); // Sort by usage count
 
   return (
     <>
@@ -68,69 +85,119 @@ export default function TagSidebar({ isOpen, onClose }: TagSidebarProps) {
             </button>
           </div>
 
-          {/* Add New Tag */}
-          <form onSubmit={handleAddTag} className="mb-6">
+          {/* Search Tags */}
+          <div className="mb-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Add New Tag
+              Search Tags
             </label>
-            <div className="flex gap-2">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
               <input
                 type="text"
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-                placeholder="Enter tag name"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search tags..."
+                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-black"
               />
-              <button
-                type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-              >
-                Add
-              </button>
             </div>
-          </form>
+          </div>
 
           {/* Tags List */}
           <div>
             <h3 className="text-lg font-medium text-gray-900 mb-4">
-              All Tags ({allTags.length})
+              Tags ({filteredTags.length} of {allTags.length})
             </h3>
-            <div className="space-y-2 max-h-96 overflow-y-auto">
-              {allTags.map((tag) => (
-                <div
-                  key={tag}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                >
-                  <span
-                    className={`inline-block px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm ${getTagColor(
-                      tag
-                    )}`}
-                  >
-                    {tag}
-                  </span>
-                  <button
-                    onClick={() => handleRemoveTag(tag)}
-                    className="text-red-500 hover:text-red-700 transition-colors"
-                    title={`Remove "${tag}" from all photos`}
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </button>
+            <div className="max-h-96 overflow-y-auto">
+              {tagMosaicData.length > 0 ? (
+                <div className="grid grid-cols-2 gap-2">
+                  {tagMosaicData.map(
+                    ({ tag, usageCount, size, color }, index) => {
+                      // Test with hardcoded colors first
+                      const testColors = [
+                        "bg-blue-500 text-white",
+                        "bg-green-500 text-white",
+                        "bg-purple-500 text-white",
+                        "bg-pink-500 text-white",
+                        "bg-yellow-500 text-white",
+                        "bg-red-500 text-white",
+                        "bg-orange-500 text-white",
+                        "bg-teal-500 text-white",
+                      ];
+                      const testColor = testColors[index % testColors.length];
+
+                      // Size classes for mosaic
+                      const sizeClasses = {
+                        1: "col-span-1 row-span-1 text-xs",
+                        2: "col-span-1 row-span-1 text-sm",
+                        3: "col-span-2 row-span-1 text-base",
+                        4: "col-span-2 row-span-2 text-lg",
+                      };
+
+                      return (
+                        <div
+                          key={tag}
+                          className={`relative group cursor-pointer ${
+                            sizeClasses[size as keyof typeof sizeClasses]
+                          }`}
+                          onClick={() => handleRemoveTag(tag)}
+                          title={`${tag} (used ${usageCount} times) - Click to remove`}
+                        >
+                          <div
+                            className={`w-full h-full p-3 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 ${testColor} flex flex-col justify-center items-center text-center`}
+                          >
+                            <span className="font-semibold truncate w-full">
+                              {tag}
+                            </span>
+                            <span className="text-xs opacity-75 mt-1">
+                              {usageCount} photo{usageCount !== 1 ? "s" : ""}
+                            </span>
+                          </div>
+
+                          {/* Remove button overlay */}
+                          <button
+                            className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRemoveTag(tag);
+                            }}
+                          >
+                            ×
+                          </button>
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
-              ))}
-              {allTags.length === 0 && (
-                <p className="text-gray-500 text-center py-4">No tags yet</p>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-gray-500 mb-2">
+                    {searchQuery
+                      ? "No tags found matching your search"
+                      : "No tags yet"}
+                  </p>
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="text-blue-600 hover:text-blue-800 text-sm"
+                    >
+                      Clear search
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           </div>

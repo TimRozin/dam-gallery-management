@@ -140,16 +140,33 @@ export default function Lightbox({ photo, isOpen, onClose }: LightboxProps) {
             <div>
               <h3 className="text-sm font-medium text-gray-700 mb-3">Tags</h3>
               <div className="flex flex-wrap gap-2">
-                {photo.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className={`inline-block px-3 py-1.5 rounded-full text-sm font-semibold shadow-sm ${getTagColor(
-                      tag
-                    )}`}
-                  >
-                    {tag}
-                  </span>
-                ))}
+                {photo.tags.map((tag, index) => {
+                  // Test with hardcoded colors first
+                  const testColors = [
+                    "bg-blue-500 text-white",
+                    "bg-green-500 text-white",
+                    "bg-purple-500 text-white",
+                    "bg-pink-500 text-white",
+                    "bg-yellow-500 text-white",
+                    "bg-red-500 text-white",
+                    "bg-orange-500 text-white",
+                    "bg-teal-500 text-white",
+                  ];
+                  const testColor = testColors[index % testColors.length];
+                  const tagColor = getTagColor(tag);
+                  console.log(
+                    `Lightbox - Tag "${tag}" with color: ${tagColor}, test color: ${testColor}`
+                  );
+
+                  return (
+                    <span
+                      key={index}
+                      className={`inline-block px-3 py-1.5 rounded-full text-sm font-semibold shadow-sm ${testColor}`}
+                    >
+                      {tag}
+                    </span>
+                  );
+                })}
                 {photo.tags.length === 0 && (
                   <p className="text-sm text-gray-500">No tags assigned</p>
                 )}
